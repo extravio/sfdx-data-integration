@@ -1,29 +1,42 @@
-public with sharing class ProjectCalloutService implements Queueable { 
+/*
+    Use Database.AllowsCallouts
+    https://www.forcetalks.com/salesforce-topic/what-is-database-allowscallouts-in-salesforce/
+    soi that QueueablePMSCall doesn't need to be defined as a @future static method
 
-    private Opportunity opp;
+*/
+public with sharing class ProjectCalloutService implements Queueable, Database.AllowsCallouts { 
 
-    public ProjectCalloutService(Opportunity opp) {
-        this.opp = opp;
+    private Id oppId;
+
+    public ProjectCalloutService(Id oppId) {
+        this.oppId = oppId;
         // System.Debug(this.opp);
     }
 
     // The PostOpportunityToPMS method is InvocableMethod sop it can be executed from Process Builder
     // The InvocableMethod must be static, so we're calling the constructor explicitly
     @InvocableMethod(label='Post Opportunity To PMS')
-    public static void PostOpportunityToPMS(List<Opportunity> opps) {
-        ProjectCalloutService pcs = new ProjectCalloutService(opps[0]);
+    public static void PostOpportunityToPMS(List<Id> oppIds) {
+        ProjectCalloutService pcs = new ProjectCalloutService(oppIds[0]);
         ID jobID = System.enqueueJob(pcs);
         // System.Debug('the job ID is: ' + jobID);
     }
+    // public static void PostOpportunityToPMS(List<Opportunity> opps) {
+    //     ProjectCalloutService pcs = new ProjectCalloutService(opps[0]);
+    //     ID jobID = System.enqueueJob(pcs);
+    //     // System.Debug('the job ID is: ' + jobID);
+    // }
 
     public void execute(QueueableContext context) {
-        System.Debug('Opportunity Id: ' + this.opp.Id);
-        ProjectCalloutService.QueueablePMSCall(this.opp.Id);
+        System.Debug('Opportunity Id: ' + this.oppId);
+        // ProjectCalloutService.QueueablePMSCall(this.opp.Id);
+        this.QueueablePMSCall(this.oppId);
     }
 
     // future method has to be static and doesn't accept Objects as parameters
-    @future(callout=true)
-    public static void QueueablePMSCall(Id oppId) {
+    // @future(callout=true)
+    // Replaced by Database.AllowsCallouts
+    public void QueueablePMSCall(Id oppId) {
 
         Opportunity opp = [SELECT Id, Name, StageName, Type, AccountId, closeDate, Amount
                    FROM Opportunity
