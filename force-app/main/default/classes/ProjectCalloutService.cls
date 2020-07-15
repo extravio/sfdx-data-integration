@@ -46,9 +46,9 @@ public with sharing class ProjectCalloutService {
             HttpResponse response = http.send(request);
             // If the request is successful, update stage name
             if (response.getStatusCode() == 200) {
-                this.opp.StageName = 'Submitted Project	';
+                this.opp.StageName = 'Submitted Project';
             } else {
-                this.opp.StageName = 'Resubmit Project	';
+                this.opp.StageName = 'Resubmit Project';
             }
             update this.opp;
         }
