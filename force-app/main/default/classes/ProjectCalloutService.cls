@@ -29,10 +29,11 @@ public with sharing class ProjectCalloutService {
             System.Debug('Execute: Opportunity Id: ' + this.opp.Id);
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-            request.setEndpoint('https://sb-integration-pms.herokuapp.com/projects');
+            request.setEndpoint('callout:ProjectService');
+            // request.setEndpoint('https://sb-integration-pms.herokuapp.com/projects');
             request.setMethod('POST');
             request.setHeader('Content-Type', 'application/json;charset=UTF-8');
-            request.setHeader('token', this.getToken());
+            // request.setHeader('token', this.getToken());
             // Set the body as a JSON object
             request.setBody('{"name":"mighty moose"}');
             String body = 
@@ -52,10 +53,10 @@ public with sharing class ProjectCalloutService {
             update this.opp;
         }
 
-        private String getToken() {
-            Map<String, ServiceTokens__c> ServiceToken = ServiceTokens__c.getAll();
-            return ServiceToken.get('ProjectServiceToken').Token__c;
-        }
+        // private String getToken() {
+        //     Map<String, ServiceTokens__c> ServiceToken = ServiceTokens__c.getAll();
+        //     return ServiceToken.get('ProjectServiceToken').Token__c;
+        // }
     }
 }
 
