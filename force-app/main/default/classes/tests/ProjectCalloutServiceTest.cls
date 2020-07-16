@@ -8,7 +8,7 @@ private class ProjectCalloutServiceTest {
         Test.startTest();
 
         // Insert new opportunity - that will trigger the process builder
-        Opportunity opp = TestDataFactory.createOpportunity();
+        Opportunity opp = TestDataFactory.createOpportunity('Closed Won');
 
         // Verify that a new Apex Job has been added to the queue.
         Integer ct = [SELECT COUNT() FROM AsyncApexJob];
@@ -37,7 +37,7 @@ private class ProjectCalloutServiceTest {
         Test.startTest();
 
         // Insert new opportunity - that will trigger the process builder
-        Opportunity opp = TestDataFactory.createOpportunity();
+        Opportunity opp = TestDataFactory.createOpportunity('Closed Won');
 
         // Verify that a new Apex Job has been added to the queue.
         Integer ct = [SELECT COUNT() FROM AsyncApexJob];
