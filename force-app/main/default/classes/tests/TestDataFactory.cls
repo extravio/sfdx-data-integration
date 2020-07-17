@@ -15,7 +15,8 @@ public with sharing class TestDataFactory {
         Project__c project = new Project__c (
             ProjectRef__c = '1234', 
             Name = 'Test Project', 
-            Opportunity__c = oppId, 
+            Opportunity__c = oppId, 	
+            Status__c = 'Running',
             Start_Date__c = Date.newInstance(2020, 7, 1),
             End_Date__c = Date.newInstance(2020, 7, 31), 
             Billable_Amount__c = 10000
